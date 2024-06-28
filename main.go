@@ -2,21 +2,22 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"os"
 	"os/exec"
 )
 
 func main() {
-	// 定义要运行的命令
-	// cmd := exec.Command("sh", "-c", "pwd")
-	cmd := exec.Command("sh", "buildrunjava.sh")
+	cmd := exec.Command("bash", "-c", "source ~/.bashrc && bash buildrunjava.sh")
 
-	// 获取命令的输出
-	output, err := cmd.Output()
+	// 设置标准输入、输出和错误流
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	// 启动交互式的 Bash Shell
+	err := cmd.Run()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("Error running bash:", err)
+		os.Exit(1)
 	}
-
-	// 打印输出
-	fmt.Println(string(output))
 }
